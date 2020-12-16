@@ -1,0 +1,41 @@
+name: cicd
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  cicd:
+    runs-on: [self-hosted, linux, X64, ets-cloud]
+    steps:
+    - uses: actions/checkout@v1
+    # - name: install-chefdk
+      # run: |
+      #   wget https://packages.chef.io/files/stable/chefdk/4.9.7/ubuntu/20.04/chefdk_4.9.7-1_amd64.deb
+      #   sudo apt install ./chefdk_4.9.7-1_amd64.deb
+    - name: foodcritic-cookstype-metadata
+      run: |
+        chef -v
+    - name: InSpec-test
+      run: kitchen -v
+    - name: create-knife-configuration
+      run: |
+        echo "current_dir = File.dirname(__FILE__)
+        log_level                :info
+        log_location             STDOUT
+        ssl_verify_mode           :verify_none
+        chef_server_url          \"https://chefserversandbox.platform.manulife.io/organizations/manulife-sandbox\"
+        cookbook_path            [\"#{current_dir}/../\"]" > knife.rb
+    - name: knife-cookbook-upload
+      env:
+        CLIENT_KEY: ${{ secrets.jhua1_key }}
+      run: |
+        echo "$CLIENT_KEY" > jhua1.pem
+        cat jhua1.pem
+        knife cookbook list -u huajeffadm -k jhua1.pem -c knife.rb
+        rm jhua1.pem
+    - name: telnet terraform
+      run: |
+        telnet terraform.platform.manulife.io 443

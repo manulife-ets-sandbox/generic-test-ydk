@@ -1,0 +1,14 @@
+name 'generic-test-ydk'
+maintainer 'Dongkai YU'
+maintainer_email 'dongkai_yu@manulife.com'
+license 'GPL-2.0-only'
+description 'Installs/Configures generic-test-ydk'
+version '0.1.1'
+chef_version '>= 12.14'
+
+issues_url 'https://github.com/manulife-ets/cookbook_test/issues'
+source_url 'https://github.com/manulife-ets/cookbook_test'
+
+supports 'windows'
+supports 'redhat'
+supports 'ubuntu'
