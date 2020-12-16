@@ -8,7 +8,6 @@ chef_version '>= 12.14'
 
 issues_url 'https://github.com/manulife-ets/cookbook_test/issues'
 source_url 'https://github.com/manulife-ets/cookbook_test'
-
 supports 'windows'
 supports 'redhat'
 supports 'ubuntu'
