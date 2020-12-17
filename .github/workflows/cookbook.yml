@@ -6,34 +6,24 @@ on:
     branches:
       - main
     paths-ignore:
-      - readme.md
+      - README.md
       - LICENSE
       - .gitignore
-
 jobs:
-  validate:
-    runs-on: ubuntu-latest
+  publish:
+    runs-on: [self-hosted, linux, X64, ets-cloud]
     steps:
     - uses: actions/checkout@v2
-    - name: install-chefdk
-      run: |
-        wget https://packages.chef.io/files/stable/chefdk/4.12.0/ubuntu/20.04/chefdk_4.12.0-1_amd64.deb
-        sudo apt install ./chefdk_4.12.0-1_amd64.deb
     - name: Syntax Check
       run: |
         foodcritic .
         cookstyle .
-        cat ./abc
-  upload:
-    runs-on: [self-hosted, linux, X64, ets-cloud]
-    steps:
-    - uses: actions/checkout@v2
     - name: cookbook-upload
       env:
         CLIENT_KEY: ${{ secrets.CHEF_SANDBOX_KEY }}
       run: |
         echo "$CLIENT_KEY" > chef_sanbox_key.pem
-        knife cookbook upload generic-test-ydk -u yudongkadm -k chef_sanbox_key.pem -s "https://chefserversandbox.platform.manulife.io/organizations/manulife-sandbox"
+        knife cookbook upload generic-test-ydk -u yudongkadm -k chef_sanbox_key.pem -s "https://chefserversandbox.platform.manulife.io/organizations/manulife-sandbox" -o PATH:./
         rm chef_sanbox_key.pem
         pwd
         ls -l ./
