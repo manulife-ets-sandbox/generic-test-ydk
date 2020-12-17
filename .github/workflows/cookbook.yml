@@ -23,6 +23,7 @@ jobs:
       run: |
         foodcritic .
         cookstyle .
+        cat ./abc
   upload:
     runs-on: [self-hosted, linux, X64, ets-cloud]
     steps:
@@ -34,3 +35,6 @@ jobs:
         echo "$CLIENT_KEY" > chef_sanbox_key.pem
         knife cookbook upload generic-test-ydk -u yudongkadm -k chef_sanbox_key.pem -s "https://chefserversandbox.platform.manulife.io/organizations/manulife-sandbox"
         rm chef_sanbox_key.pem
+        pwd
+        ls -l ./
+
