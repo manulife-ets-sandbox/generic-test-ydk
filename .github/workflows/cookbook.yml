@@ -16,7 +16,7 @@ jobs:
     - uses: actions/checkout@v2
     - name: customized action
       id: test_action
-      uses: manulife-ets-sandbox/test_action@v1.0
+      uses: actions/test_action@v1.0
       with:
         who-to-greet: 'HAHAHA' 
     - name: Get Output
