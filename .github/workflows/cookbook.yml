@@ -3,18 +3,17 @@ on: [push]
 jobs:
   hello_world_job:
     runs-on: ubuntu-latest
-    name: A job to say hello
     steps:
-    - name: custom action
-      uses: actions/checkout@v2
-      with:
-        repository: manulife-ets-sandbox/test_action
-        ref: refs/heads/main
-        path: .github/actions/test_action
-    - name: test 
-      id: foo
-      uses: ./.github/actions/test_action
-      with:
-        who-to-greet: 'Mona the Octocat'
-    - run: echo random-number ${{ steps.foo.outputs.random-number }}
-      shell: bash
+      - name: custom action
+        uses: actions/checkout@v2
+        with:
+          repository: manulife-ets-sandbox/test_action
+          ref: refs/heads/main
+          path: .github/actions/test_action
+      - name: test 
+        id: foo
+        uses: ./.github/actions/test_action
+        with:
+          who-to-greet: 'Mona the Octocat'
+      - run: echo random-number ${{ steps.foo.outputs.random-number }}
+        shell: bash
