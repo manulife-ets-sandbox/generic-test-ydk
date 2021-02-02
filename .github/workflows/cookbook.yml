@@ -8,7 +8,7 @@ jobs:
     - name: custom action
       uses: actions/checkout@v2
       with:
-        repository: manulife-ets/test_action
+        repository: manulife-ets-sandbox/test_action
         ref: refs/heads/main
         path: .github/actions/test_action
     - name: test 
