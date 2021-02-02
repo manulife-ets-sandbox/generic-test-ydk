@@ -1,23 +1,14 @@
-name: Cookbook uploading
+on: [push]
 
-on:
-  workflow_dispatch:
-  push:
-    branches:
-      - main
-    paths-ignore:
-      - README.md
-      - LICENSE
-      - .gitignore
 jobs:
-  publish:
+  hello_world_job:
     runs-on: ubuntu-latest
+    name: A job to say hello
     steps:
     - uses: actions/checkout@v2
-    - name: customized action
-      id: test_action
-      uses: actions/test_action@v1.0
+    - id: foo
+      uses: actions/hello-world-composite-run-steps-action@v1
       with:
-        who-to-greet: 'HAHAHA' 
-    - name: Get Output
-      run: echo "The time was ${{ steps.test_action.outputs.timestamp }}"
+        who-to-greet: 'Mona the Octocat'
+    - run: echo random-number ${{ steps.foo.outputs.random-number }}
+      shell: bash
