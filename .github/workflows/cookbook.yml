@@ -14,7 +14,7 @@ jobs:
     runs-on: [self-hosted, linux, X64, ets-cloud]
     steps:
     - uses: actions/checkout@v2
-    - uses: manulife-ets-sandbox/test_action
+    - uses: manulife-ets-sandbox/test_action@v0.1.0
     - name: Syntax Check
       run: |
         foodcritic .
