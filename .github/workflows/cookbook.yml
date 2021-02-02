@@ -11,7 +11,7 @@ on:
       - .gitignore
 jobs:
   publish:
-    runs-on: [self-hosted, linux, X64, ets-cloud]
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     - name: customized action
@@ -19,17 +19,5 @@ jobs:
       uses: manulife-ets-sandbox/test_action@v1.0
       with:
         who-to-greet: 'HAHAHA' 
-    - name: Syntax Check
-      run: |
-        foodcritic .
-        cookstyle .
-    - name: cookbook-upload
-      env:
-        CLIENT_KEY: ${{ secrets.CHEF_SANDBOX_KEY }}
-      run: |
-        echo "$CLIENT_KEY" > chef_sanbox_key.pem
-        knife cookbook upload generic-test-ydk -u yudongkadm -k chef_sanbox_key.pem -s "https://chefserversandbox.platform.manulife.io/organizations/manulife-sandbox" -o PATH:./
-        rm chef_sanbox_key.pem
-        pwd
-        ls -l ./
-
+    - name: Get Output
+      run: echo "The time was ${{ steps.test_action.outputs.timestamp }}"
