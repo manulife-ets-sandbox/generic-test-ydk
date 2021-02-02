@@ -7,7 +7,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - id: foo
-      uses: manulife-ets-sandbox/test_action@main
+      uses: manulife-ets-sandbox/test_action@master
       with:
         who-to-greet: 'Mona the Octocat'
     - run: echo random-number ${{ steps.foo.outputs.random-number }}
