@@ -9,9 +9,10 @@ jobs:
       uses: actions/checkout@v2
       with:
         repository: manulife-ets/test_action
-        ref: v1
+        ref: refs/heads/main
         path: .github/actions/test_action
     - name: test 
+      id: foo
       uses: ./.github/actions/test_action
       with:
         who-to-greet: 'Mona the Octocat'
