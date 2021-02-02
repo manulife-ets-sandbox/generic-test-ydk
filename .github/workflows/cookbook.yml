@@ -5,7 +5,13 @@ jobs:
     runs-on: ubuntu-latest
     name: A job to say hello
     steps:
-    - uses: actions/checkout@v2
+    - name: custom action
+      uses: actions/checkout@v2
+      with:
+        repository: manulife-ets/test_action
+        ref: v1
+        path: .github/actions/test_action
+    - name: test 
     - id: foo
       uses: ./.github/actions/test_action
       with:
