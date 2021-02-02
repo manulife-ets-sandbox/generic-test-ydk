@@ -8,10 +8,9 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: manulife-ets-sandbox/test_action
-          ref: refs/heads/main
+          ref: v1
           path: .github/actions/test_action
-      - name: test 
-        id: foo
+      - name: Run custom action 
         uses: ./.github/actions/test_action
         with:
           who-to-greet: 'Mona the Octocat'
