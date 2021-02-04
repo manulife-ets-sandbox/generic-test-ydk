@@ -10,6 +10,7 @@ jobs:
           repository: manulife-ets-sandbox/test_action
           ref: v1
           path: .github/actions/test_action
+          token: ${{ secrets.ACTION_PAT }}
       - name: Run custom action 
         uses: ./.github/actions/test_action
         with:
