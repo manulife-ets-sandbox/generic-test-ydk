@@ -8,7 +8,7 @@ jobs:
     steps:
       - name: custom action
         id: custom_action
-        uses: manulife-ets-sandbox/test_action@v1.4
+        uses: manulife-ets-sandbox/test_action@v1.5
         with:
           who-to-greet: 'Mona the Octocat'
       - run: echo random-number ${{ steps.custom_action.outputs.random-number }}
