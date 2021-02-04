@@ -1,0 +1,13 @@
+on: [push]
+
+jobs:
+  custom_action:
+    runs-on: [self-hosted, linux, X64, ets-cloud]
+    steps:
+      - name: custom action
+        uses: manulife-ets-sandbox/test_action@v1.1
+        with:
+          who-to-greet: 'Mona the Octocat'
+          token: ${{ secrets.ACTION_PAT }}
+      - run: echo random-number ${{ steps.foo.outputs.random-number }}
+        shell: bash
