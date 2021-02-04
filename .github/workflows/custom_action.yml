@@ -5,8 +5,9 @@ jobs:
     runs-on: [self-hosted, linux, X64, ets-cloud]
     steps:
       - name: custom action
+        id: custom_action
         uses: manulife-ets-sandbox/test_action@v1.1
         with:
           who-to-greet: 'Mona the Octocat'
-      - run: echo random-number ${{ steps.foo.outputs.random-number }}
+      - run: echo random-number ${{ steps.custom_action.outputs.random-number }}
         shell: bash
