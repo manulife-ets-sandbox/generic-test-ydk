@@ -10,6 +10,10 @@ jobs:
       - name: retrieve secrets
         id: secrets
         uses: hashicorp/vault-action@v2.1.2
+        env: 
+          VAULT_FORMAT: json
+          VAULT_NAMESPACE: ETS-CLOUDPLATFORM-IAC-3365
+          VAULT_SKIP_VERIFY: true
         with:
           url: https://vault.na.platform.manulife.io:443
           method: approle
