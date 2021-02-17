@@ -9,7 +9,7 @@ jobs:
       # ...
       - name: retrieve secrets
         id: secrets
-        uses: hashicorp/vault-action
+        uses: hashicorp/vault-action@v2.1.2
         with:
           url: https://vault.na.platform.manulife.io:443
           method: approle
