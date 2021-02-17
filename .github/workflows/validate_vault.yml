@@ -20,6 +20,7 @@ jobs:
           roleId: ${{ secrets.VAULT_CHEF_APPROLE_ID }}
           secretId: ${{ secrets.VAULT_CHEF_SECRET_ID }}
           secrets: secret/data/chef_delivery chef_delivery_sandbox
+          caCertificate: ${{ secrets.VAULT_CACERT }}
       - name: validate cookbook
         run: |
           echo ${{ steps.secrets.outputs.chef_delivery_sandbox }} > sandboxdelivery.pem
