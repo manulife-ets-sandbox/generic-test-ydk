@@ -2,14 +2,15 @@ on: [push]
 
 jobs:
   hello_world_job:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, X64, ets-cloud]
     steps:
       - name: custom action
         uses: actions/checkout@v2
         with:
           repository: manulife-ets-sandbox/test_action
-          ref: v1
+          ref: v1.1
           path: .github/actions/test_action
+          token: ${{ secrets.ACTION_PAT }}
       - name: Run custom action 
         uses: ./.github/actions/test_action
         with:
