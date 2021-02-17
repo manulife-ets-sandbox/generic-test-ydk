@@ -3,11 +3,11 @@ on:
     branches: [develop]
 
 jobs:
-  build:
-    # ...
+  validate_cookbook:
+    runs-on: [self-hosted, linux, X64, ets-cloud]
     steps:
       # ...
-      - name: Import Secrets
+      - name: retrieve secrets
         id: secrets
         uses: hashicorp/vault-action
         with:
