@@ -1,0 +1,22 @@
+on: 
+  push:
+    branches: [develop]
+
+jobs:
+  build:
+    # ...
+    steps:
+      # ...
+      - name: Import Secrets
+        id: secrets
+        uses: hashicorp/vault-action
+        with:
+          url: https://vault.na.platform.manulife.io:443
+          method: approle
+          roleId: ${{ secrets.VAULT_CHEF_APPROLE_ID }}
+          secretId: ${{ secrets.VAULT_CHEF_SECRET_ID }}
+          secrests: secret/data/chef_delivery chef_delivery_sandbox
+      - name: validate cookbook
+        run: |
+          echo ${{ steps.secrets.outputs.chef_delivery_sandbox }} > sandboxdelivery.pem
+          knife node list -u sandboxdelivery -k ./sandboxdelivery.pem
