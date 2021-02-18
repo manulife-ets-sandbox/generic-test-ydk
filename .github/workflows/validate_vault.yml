@@ -9,13 +9,13 @@ jobs:
       # ...
       - name: retrieve secrets
         id: secrets
-        uses: manulife-ets-sandbox/vault_retrieve_secret@develop
+        uses: manulife-ets-sandbox/vault_retrieve_secret@testv1
         with:
           vault_address: https://vault.na.platform.manulife.io:443
           name_space: ETS-CLOUDPLATFORM-IAC-3365
           approle_id: ${{ secrets.VAULT_CHEF_APPROLE_ID }}
           secret_id: ${{ secrets.VAULT_CHEF_SECRET_ID }}
-          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          # token: ${{ secrets.REPO_ACCESS_TOKEN }}
       - name: validate cookbook
         run: |
           echo ${{ steps.secrets.outputs.chef_delivery_sandbox }} 
