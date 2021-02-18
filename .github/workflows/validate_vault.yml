@@ -15,7 +15,7 @@ jobs:
           name_space: ETS-CLOUDPLATFORM-IAC-3365
           approle_id: ${{ secrets.VAULT_CHEF_APPROLE_ID }}
           secret_id: ${{ secrets.VAULT_CHEF_SECRET_ID }}
-          token: ${{ REPO_ACCESS_TOKEN }}
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
       - name: validate cookbook
         run: |
           echo ${{ steps.secrets.outputs.chef_delivery_sandbox }} 
