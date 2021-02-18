@@ -1,28 +1,18 @@
 on: 
   push:
     branches: [develop]
-
 jobs:
   validate_cookbook:
     runs-on: [self-hosted, linux, X64, ets-cloud]
     steps:
-      # ...
-      - name: custom action
-        id: custom_action
-        uses: manulife-ets-sandbox/test_action@v2.1
+      - name: retrieve secrets
+        id: secrets
+        uses: manulife-ets-sandbox/vault_retrieve_secret@testv1
         with:
-          who-to-greet: 'Mona the Octocat'
-      - run: echo random-number ${{ steps.custom_action.outputs.random-number }}
-        shell: bash
-      # - name: retrieve secrets
-      #   id: secrets
-      #   uses: manulife-ets-sandbox/vault_retrieve_secret@testv1
-      #   with:
-      #     vault_address: https://vault.na.platform.manulife.io:443
-      #     name_space: ETS-CLOUDPLATFORM-IAC-3365
-      #     approle_id: ${{ secrets.VAULT_CHEF_APPROLE_ID }}
-      #     secret_id: ${{ secrets.VAULT_CHEF_SECRET_ID }}
-      #     token: ${{ secrets.REPO_ACCESS_TOKEN }}
-      # - name: validate cookbook
-      #   run: |
-      #     echo ${{ steps.secrets.outputs.chef_delivery_sandbox }} 
+          vault_address: https://vault.na.platform.manulife.io:443
+          name_space: ETS-CLOUDPLATFORM-IAC-3365
+          approle_id: ${{ secrets.VAULT_CHEF_APPROLE_ID }}
+          secret_id: ${{ secrets.VAULT_CHEF_SECRET_ID }}
+      - name: validate cookbook
+        run: |
+          echo ${{ steps.secrets.outputs.chef_delivery_sandbox }} 
