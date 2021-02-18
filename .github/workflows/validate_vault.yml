@@ -9,19 +9,12 @@ jobs:
       # ...
       - name: retrieve secrets
         id: secrets
-        uses: hashicorp/vault-action@v2.1.2
-        env: 
-          VAULT_FORMAT: json
-          VAULT_NAMESPACE: ETS-CLOUDPLATFORM-IAC-3365
-          VAULT_SKIP_VERIFY: true
+        uses: manulife-ets-sandbox/vault_retrieve_secret@develop
         with:
-          url: https://vault.na.platform.manulife.io:443
-          method: approle
-          roleId: ${{ secrets.VAULT_CHEF_APPROLE_ID }}
-          secretId: ${{ secrets.VAULT_CHEF_SECRET_ID }}
-          secrets: secret/data/chef_delivery chef_delivery_sandbox
-          caCertificate: ${{ secrets.VAULT_CACERT }}
+          vault_address: https://vault.na.platform.manulife.io:443
+          name_space: ETS-CLOUDPLATFORM-IAC-3365
+          approle_id: ${{ secrets.VAULT_CHEF_APPROLE_ID }}
+          secret_id: ${{ secrets.VAULT_CHEF_SECRET_ID }}
       - name: validate cookbook
         run: |
-          echo ${{ steps.secrets.outputs.chef_delivery_sandbox }} > sandboxdelivery.pem
-          knife node list -u sandboxdelivery -k ./sandboxdelivery.pem
+          echo ${{ steps.secrets.outputs.chef_delivery_sandbox }} 
