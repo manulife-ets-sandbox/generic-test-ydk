@@ -8,14 +8,9 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
-      - name: show directory
-        run: |
-          pwd
-          ls
-      # - name: validate cookbook
-      #   id: validate_cookbook
-      #   uses: manulife-ets-sandbox/validate_cookbook@testv1
-      #   with:
-      #     chef_key: ${{ secrets.CHEF_SVC_KEY }}
-      #     chef_server: sandbox
-
+      - name: validate cookbook
+        id: validate_cookbook
+        uses: manulife-ets-sandbox/validate_cookbook@testv1
+        with:
+          chef_key: ${{ secrets.CHEF_SVC_KEY }}
+          chef_server: sandbox
