@@ -8,24 +8,26 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
-      - name: Extract branch name
-        shell: bash
-        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-        id: extract_branch
+      # - name: Extract branch name
+      #   shell: bash
+      #   run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+      #   id: extract_branch
       - name: Extract Chef Server
         shell: bash
         id: extract_chefserver
         run: |
-          if [ "${{ steps.extract_branch.outputs.branch }}" == "main" ]; then
+          if [ "${GITHUB_REF#refs/heads/}" == "main" ]; then
             echo "##[set-output name=chefserver;]$(echo prod)"
-          else
+          elif [ "${GITHUB_REF#refs/heads/}" == "develop" ]; then
             echo "##[set-output name=chefserver;]$(echo sandbox)"
+          else
+            echo "Branch name invalid. This action can only be triggered by \"main\" or \"sandbox\" branch"
+            exit 1
           fi
       - name: show chef server
         shell: bash
         run: |
           echo "chef server is ${{ steps.extract_chefserver.outputs.chefserver }}"
-          echo "current branch is ${{ steps.extract_branch.outputs.branch }}"
       - name: validate cookbook
         id: validate_cookbook
         uses: manulife-ets-sandbox/validate_cookbook@latest
