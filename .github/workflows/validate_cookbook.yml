@@ -30,7 +30,7 @@ jobs:
         with:
           url: https://vault.prod.cac.platform.manulife.io:443
           method: approle
-          roleId: ${{ secrets.VAULT_CHEF_APPROLE_ID }}
+          roleId: bf50f9e9-2cca-beac-6cfa-8db32dae9614
           secretId: ${{ secrets.VAULT_CHEF_SECRET_ID }}
           namespace: ETS-CLOUDPLATFORM-IAC-3365
           tlsSkipVerify: true
