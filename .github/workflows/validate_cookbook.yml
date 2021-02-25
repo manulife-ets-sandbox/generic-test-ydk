@@ -33,6 +33,7 @@ jobs:
           roleId: ${{ secrets.VAULT_CHEF_APPROLE_ID }}
           secretId: ${{ secrets.VAULT_CHEF_SECRET_ID }}
           namespace: ETS-CLOUDPLATFORM-IAC-3365
+          tlsSkipVerify: true
           secrets: 
             secret/data/chef_delivery chef_delivery_key | CHEF_DELIVERY_KEY
       - name: check key
