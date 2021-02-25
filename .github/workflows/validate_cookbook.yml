@@ -42,11 +42,11 @@ jobs:
         id: validate_cookbook
         uses: manulife-ets-sandbox/validate_cookbook@latest
         with:
-          chef_key: ${{ steps.secrets.outputs.NPM_TOKEN }}
+          chef_key: ${{ steps.retrieve_secret.outputs.CHEF_DELIVERY_KEY }}
           chef_server: ${{ steps.extract_chefserver.outputs.chefserver }}
       - name: upload cookbook
         uses: manulife-ets-sandbox/upload_cookbook@latest
         with:
-          chef_key: ${{ steps.secrets.outputs.NPM_TOKEN }}
+          chef_key: ${{ steps.retrieve_secret.outputs.CHEF_DELIVERY_KEY }}
           chef_server: ${{ steps.extract_chefserver.outputs.chefserver }}
 
