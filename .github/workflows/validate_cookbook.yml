@@ -24,15 +24,28 @@ jobs:
         shell: bash
         run: |
           echo "chef server is ${{ steps.extract_chefserver.outputs.chefserver }}"
+      - name: Import Secrets
+        id: retrieve_secret
+        uses: hashicorp/vault-action@v2.1.2
+        with:
+          url: https://vault.prod.cac.platform.manulife.io:443
+          method: approle
+          roleId: ${{ secrets.VAULT_CHEF_APPROLE_ID }}
+          secretId: ${{ secrets.VAULT_CHEF_SECRET_ID }}
+          namespace: ETS-CLOUDPLATFORM-IAC-3365
+          secrets: 
+            secret/data/chef_delivery chef_delivery_key | CHEF_DELIVERY_KEY
+      - name: check key
+        run: echo ${{ steps.secrets.outputs.NPM_TOKEN }}
       - name: validate cookbook
         id: validate_cookbook
         uses: manulife-ets-sandbox/validate_cookbook@latest
         with:
-          chef_key: ${{ secrets.CHEF_SVC_KEY }}
+          chef_key: ${{ steps.secrets.outputs.NPM_TOKEN }}
           chef_server: ${{ steps.extract_chefserver.outputs.chefserver }}
       - name: upload cookbook
         uses: manulife-ets-sandbox/upload_cookbook@latest
         with:
-          chef_key: ${{ secrets.CHEF_SVC_KEY }}
+          chef_key: ${{ steps.secrets.outputs.NPM_TOKEN }}
           chef_server: ${{ steps.extract_chefserver.outputs.chefserver }}
 
