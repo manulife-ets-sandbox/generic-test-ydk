@@ -16,6 +16,11 @@ jobs:
           token=$GITHUB_TOKEN
           tag="v$VERSION"
           message=$tag
+
+          echo "Github SHA: $object"
+          echo "Repository: $repo"
+          echo "TOKEN: $token"
+          echo "TAG: $tag"
           # Create version tag
           resp=`curl \
             -X POST \
