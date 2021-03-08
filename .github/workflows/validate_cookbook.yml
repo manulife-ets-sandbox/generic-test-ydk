@@ -13,7 +13,7 @@ jobs:
           VERSION=`cat metadata.rb|grep "version "|grep -v "_version"|awk '{print $2}'|sed $'s/\'//g'`
           object=$GITHUB_SHA
           repo=${{ github.repository }}
-          token=$GITHUB_TOKEN
+          token=${{ secrets.GITHUB_TOKEN }}
           tag="v$VERSION"
           message=$tag
 
