@@ -27,7 +27,7 @@ jobs:
             echo "Failed creating tag for this version"
             exit 2 
           fi
-          cat $resp
+          echo $resp
           resp=`curl \
             -X POST \
             -H "Authorization: token $token" \
@@ -38,7 +38,7 @@ jobs:
             echo "Failed creating tag for this version"
             exit 2 
           fi
-          cat $resp
+          echo $resp
       # - name: Extract Chef Server
       #   shell: bash
       #   id: extract_chefserver
