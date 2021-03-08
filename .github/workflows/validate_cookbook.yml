@@ -8,45 +8,71 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
-      - name: Extract Chef Server
-        shell: bash
-        id: extract_chefserver
+      - name: tagging repository
         run: |
-          if [ "${GITHUB_REF#refs/heads/}" == "main" ]; then
-            echo "##[set-output name=chefserver;]$(echo prod)"
-          elif [ "${GITHUB_REF#refs/heads/}" == "develop" ]; then
-            echo "##[set-output name=chefserver;]$(echo sandbox)"
-          else
-            echo "Branch name invalid. This action can only be triggered by \"main\" or \"sandbox\" branch"
-            exit 1
+          VERSION=`cat metadata.rb|grep "version "|grep -v "_version"|awk '{print $2}'|sed $'s/\'//g'`
+          object=$GITHUB_SHA
+          repo=${{ github.repository }}
+          token=$GITHUB_TOKEN
+          tag="v$VERSION"
+          message=$tag
+          # Create version tag
+          resp=curl \
+            -X POST \
+            -H "Authorization: token $token" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/$repo/git/tags \
+            -d "{\"tag\":\"$tag\",\"message\":\"$message\",\"object\":\"${object}\",\"type\":\"commit\"}" &&
+          curl \
+            -X POST \
+            -H "Authorization: token $token" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/$repo/git/refs \
+            -d "{\"ref\":\"refs/tags/$tag\",\"sha\":\"$object\"}"
+          if [ $? -ne 0 ]; then
+            echo "Failed creating tag for this version"
+            exit 2 
           fi
-      - name: show chef server
-        shell: bash
-        run: |
-          echo "chef server is ${{ steps.extract_chefserver.outputs.chefserver }}"
-      - name: Import Secrets
-        id: retrieve_secret
-        uses: hashicorp/vault-action@v2.1.2
-        with:
-          url: https://vault.prod.cac.platform.manulife.io:443
-          method: approle
-          roleId: bf50f9e9-2cca-beac-6cfa-8db32dae9614
-          secretId: ${{ secrets.VAULT_CHEF_SECRET_ID }}
-          namespace: ETS-CLOUDPLATFORM-IAC-3365
-          tlsSkipVerify: true
-          secrets: 
-            secret/data/chef_delivery chef_delivery_key | CHEF_DELIVERY_KEY
-      - name: check key
-        run: echo "${{ steps.retrieve_secret.outputs.CHEF_DELIVERY_KEY }}"
-      - name: validate cookbook
-        id: validate_cookbook
-        uses: manulife-ets-sandbox/validate_cookbook@latest
-        with:
-          chef_key: ${{ steps.retrieve_secret.outputs.CHEF_DELIVERY_KEY }}
-          chef_server: ${{ steps.extract_chefserver.outputs.chefserver }}
-      - name: upload cookbook
-        uses: manulife-ets-sandbox/upload_cookbook@latest
-        with:
-          chef_key: ${{ steps.retrieve_secret.outputs.CHEF_DELIVERY_KEY }}
-          chef_server: ${{ steps.extract_chefserver.outputs.chefserver }}
+          cat $resp
+      # - name: Extract Chef Server
+      #   shell: bash
+      #   id: extract_chefserver
+      #   run: |
+      #     if [ "${GITHUB_REF#refs/heads/}" == "main" ]; then
+      #       echo "##[set-output name=chefserver;]$(echo prod)"
+      #     elif [ "${GITHUB_REF#refs/heads/}" == "develop" ]; then
+      #       echo "##[set-output name=chefserver;]$(echo sandbox)"
+      #     else
+      #       echo "Branch name invalid. This action can only be triggered by \"main\" or \"develop\" branch"
+      #       exit 1
+      #     fi
+      # - name: show chef server
+      #   shell: bash
+      #   run: |
+      #     echo "chef server is ${{ steps.extract_chefserver.outputs.chefserver }}"
+      # - name: Import Secrets
+      #   id: retrieve_secret
+      #   uses: hashicorp/vault-action@v2.1.2
+      #   with:
+      #     url: https://vault.prod.cac.platform.manulife.io:443
+      #     method: approle
+      #     roleId: bf50f9e9-2cca-beac-6cfa-8db32dae9614
+      #     secretId: ${{ secrets.VAULT_CHEF_SECRET_ID }}
+      #     namespace: ETS-CLOUDPLATFORM-IAC-3365
+      #     tlsSkipVerify: true
+      #     secrets: 
+      #       secret/data/chef_delivery chef_delivery_key | CHEF_DELIVERY_KEY
+      # - name: check key
+      #   run: echo "${{ steps.retrieve_secret.outputs.CHEF_DELIVERY_KEY }}"
+      # - name: validate cookbook
+      #   id: validate_cookbook
+      #   uses: manulife-ets-sandbox/validate_cookbook@latest
+      #   with:
+      #     chef_key: ${{ steps.retrieve_secret.outputs.CHEF_DELIVERY_KEY }}
+      #     chef_server: ${{ steps.extract_chefserver.outputs.chefserver }}
+      # - name: upload cookbook
+      #   uses: manulife-ets-sandbox/upload_cookbook@latest
+      #   with:
+      #     chef_key: ${{ steps.retrieve_secret.outputs.CHEF_DELIVERY_KEY }}
+      #     chef_server: ${{ steps.extract_chefserver.outputs.chefserver }}
 
