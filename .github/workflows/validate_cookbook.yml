@@ -17,18 +17,23 @@ jobs:
           tag="v$VERSION"
           message=$tag
           # Create version tag
-          resp=curl \
+          resp=`curl \
             -X POST \
             -H "Authorization: token $token" \
             -H "Accept: application/vnd.github.v3+json" \
             https://api.github.com/repos/$repo/git/tags \
-            -d "{\"tag\":\"$tag\",\"message\":\"$message\",\"object\":\"${object}\",\"type\":\"commit\"}" &&
-          curl \
+            -d "{\"tag\":\"$tag\",\"message\":\"$message\",\"object\":\"${object}\",\"type\":\"commit\"}"` 
+          if [ $? -ne 0 ]; then
+            echo "Failed creating tag for this version"
+            exit 2 
+          fi
+          cat $resp
+          resp=`curl \
             -X POST \
             -H "Authorization: token $token" \
             -H "Accept: application/vnd.github.v3+json" \
             https://api.github.com/repos/$repo/git/refs \
-            -d "{\"ref\":\"refs/tags/$tag\",\"sha\":\"$object\"}"
+            -d "{\"ref\":\"refs/tags/$tag\",\"sha\":\"$object\"}"`
           if [ $? -ne 0 ]; then
             echo "Failed creating tag for this version"
             exit 2 
