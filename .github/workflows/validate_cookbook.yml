@@ -36,8 +36,6 @@ jobs:
           tlsSkipVerify: true
           secrets: 
             secret/data/chef_delivery chef_delivery_key | CHEF_DELIVERY_KEY
-      - name: check key
-        run: echo "${{ steps.retrieve_secret.outputs.CHEF_DELIVERY_KEY }}"
       - name: validate cookbook
         id: validate_cookbook
         uses: manulife-ets-sandbox/validate_cookbook@latest
