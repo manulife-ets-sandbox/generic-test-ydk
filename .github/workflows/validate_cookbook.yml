@@ -47,7 +47,7 @@ jobs:
       - name: upload cookbook
         uses: manulife-ets-sandbox/upload_cookbook@testing
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: 3038b85fad4cec6f99ea5da3c547c38ea1738733
           chef_key: ${{ steps.retrieve_secret.outputs.CHEF_DELIVERY_KEY }}
           chef_server: ${{ steps.extract_chefserver.outputs.chefserver }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
