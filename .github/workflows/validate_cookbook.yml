@@ -8,6 +8,9 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
+      - name: tagging repository
+        run: |
+
       - name: Extract Chef Server
         shell: bash
         id: extract_chefserver
@@ -43,7 +46,7 @@ jobs:
           chef_key: ${{ steps.retrieve_secret.outputs.CHEF_DELIVERY_KEY }}
           chef_server: ${{ steps.extract_chefserver.outputs.chefserver }}
       - name: upload cookbook
-        uses: manulife-ets-sandbox/upload_cookbook@latest
+        uses: manulife-ets-sandbox/upload_cookbook@testing
         with:
           chef_key: ${{ steps.retrieve_secret.outputs.CHEF_DELIVERY_KEY }}
           chef_server: ${{ steps.extract_chefserver.outputs.chefserver }}
