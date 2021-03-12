@@ -43,7 +43,7 @@ jobs:
           chef_key: ${{ steps.retrieve_secret.outputs.CHEF_DELIVERY_KEY }}
           chef_server: ${{ steps.extract_chefserver.outputs.chefserver }}
       - name: upload cookbook
-        uses: manulife-ets-sandbox/upload_cookbook@testing
+        uses: manulife-ets-sandbox/upload_cookbook@latest
         with:
           chef_key: ${{ steps.retrieve_secret.outputs.CHEF_DELIVERY_KEY }}
           chef_server: ${{ steps.extract_chefserver.outputs.chefserver }}
