@@ -48,38 +48,3 @@ jobs:
           chef_key: ${{ steps.retrieve_secret.outputs.CHEF_DELIVERY_KEY }}
           chef_server: ${{ steps.extract_chefserver.outputs.chefserver }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
-
-          # VERSION=`cat metadata.rb|grep "version "|grep -v "_version"|awk '{print $2}'|sed $'s/\'//g'`
-          # object=$GITHUB_SHA
-          # repo=${{ github.repository }}
-          # token=${{ secrets.GITHUB_TOKEN }}
-          # tag="v$VERSION"
-          # message=$tag
-
-          # echo "Github SHA: $object"
-          # echo "Repository: $repo"
-          # echo "TOKEN: $token"
-          # echo "TAG: $tag"
-          # # Create version tag
-          # resp=`curl \
-          #   -X POST \
-          #   -H "Authorization: token $token" \
-          #   -H "Accept: application/vnd.github.v3+json" \
-          #   https://api.github.com/repos/$repo/git/tags \
-          #   -d "{\"tag\":\"$tag\",\"message\":\"$message\",\"object\":\"${object}\",\"type\":\"commit\"}"` 
-          # if [ $? -ne 0 ]; then
-          #   echo "Failed creating tag for this version"
-          #   exit 2 
-          # fi
-          # echo $resp
-          # resp=`curl \
-          #   -X POST \
-          #   -H "Authorization: token $token" \
-          #   -H "Accept: application/vnd.github.v3+json" \
-          #   https://api.github.com/repos/$repo/git/refs \
-          #   -d "{\"ref\":\"refs/tags/$tag\",\"sha\":\"$object\"}"`
-          # if [ $? -ne 0 ]; then
-          #   echo "Failed creating tag for this version"
-          #   exit 2 
-          # fi
-          # echo $resp
