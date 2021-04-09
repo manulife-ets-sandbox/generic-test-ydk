@@ -50,4 +50,4 @@ jobs:
         with:
           chef_key: ${{ steps.retrieve_secret.outputs.CHEF_DELIVERY_KEY }}
           chef_server: ${{ steps.extract_chefserver.outputs.chefserver }}
-          github_token: ${{ secrets.TEST_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
