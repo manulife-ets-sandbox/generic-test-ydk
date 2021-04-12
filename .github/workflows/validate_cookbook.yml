@@ -41,12 +41,12 @@ jobs:
             secret/data/chef_delivery chef_delivery_key | CHEF_DELIVERY_KEY
       - name: validate cookbook
         id: validate_cookbook
-        uses: manulife-ets-sandbox/validate_cookbook@v0.1.2
+        uses: manulife-ets-sandbox/validate_cookbook@v1.2
         with:
           chef_key: ${{ steps.retrieve_secret.outputs.CHEF_DELIVERY_KEY }}
           chef_server: ${{ steps.extract_chefserver.outputs.chefserver }}
       - name: upload cookbook
-        uses: manulife-ets-sandbox/upload_cookbook@v0.1.2
+        uses: manulife-ets-sandbox/upload_cookbook@v1.2
         with:
           repository: manulife-ets-sandbox/upload_cookbook
           github_token: ${{ secrets.TEST_TOKEN }}
