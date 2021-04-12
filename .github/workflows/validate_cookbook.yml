@@ -43,12 +43,12 @@ jobs:
         id: validate_cookbook
         uses: manulife-ets-sandbox/validate_cookbook@testing
         with:
+          github_token: ${{ secrets.TEST_TOKEN }}
           chef_key: ${{ steps.retrieve_secret.outputs.CHEF_DELIVERY_KEY }}
           chef_server: ${{ steps.extract_chefserver.outputs.chefserver }}
       - name: upload cookbook
         uses: manulife-ets-sandbox/upload_cookbook@testing
         with:
-          repository: manulife-ets-sandbox/upload_cookbook
           github_token: ${{ secrets.TEST_TOKEN }}
           chef_key: ${{ steps.retrieve_secret.outputs.CHEF_DELIVERY_KEY }}
           chef_server: ${{ steps.extract_chefserver.outputs.chefserver }}
