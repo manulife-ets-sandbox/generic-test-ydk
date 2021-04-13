@@ -62,7 +62,7 @@ jobs:
           ref: testing
           token: ${{ secrets.TEST_TOKEN }}
           path: .github/actions/upload_cookbook
-      - name: validate_cookbook
+      - name: upload_cookbook
         uses: ./.github/actions/upload_cookbook
         with:
           chef_key: ${{ steps.retrieve_secret.outputs.CHEF_DELIVERY_KEY }}
