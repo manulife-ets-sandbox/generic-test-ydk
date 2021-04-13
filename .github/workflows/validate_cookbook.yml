@@ -48,7 +48,9 @@ jobs:
           token: ${{ secrets.TEST_TOKEN }}
           path: .github/actions/validate_cookbook
           chef_key: ${{ steps.retrieve_secret.outputs.CHEF_DELIVERY_KEY }}
-          chef_server: ${{ steps.extract_chefserver.outputs.chefserver }}         
+          chef_server: ${{ steps.extract_chefserver.outputs.chefserver }}  
+      - name: Run validate_cookbook
+        uses: ./.github/actions/validate_cookbook
       - name: Checkout Repo 
         uses: actions/checkout@v2           
       - name: upload cookbook
@@ -59,3 +61,5 @@ jobs:
           path: .github/actions/upload_cookbook
           chef_key: ${{ steps.retrieve_secret.outputs.CHEF_DELIVERY_KEY }}
           chef_server: ${{ steps.extract_chefserver.outputs.chefserver }}
+      - name: Run upload_cookbook
+        uses: ./.github/actions/upload_cookbook
