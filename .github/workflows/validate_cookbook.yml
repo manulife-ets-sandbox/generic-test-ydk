@@ -3,14 +3,11 @@ on:
     branches: [main, develop]
 
 jobs:
-  validate_cookbook:
+  upload_cookbook:
     runs-on: [self-hosted, linux, X64, ets-cloud]
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
-      - name: tagging repository
-        run: |
-
       - name: Extract Chef Server
         shell: bash
         id: extract_chefserver
@@ -26,7 +23,7 @@ jobs:
       - name: show chef server
         shell: bash
         run: |
-          echo "chef server is ${{ steps.extract_chefserver.outputs.chefserver }}"
+          echo "target chef server is ${{ steps.extract_chefserver.outputs.chefserver }}"
       - name: Import Secrets
         id: retrieve_secret
         uses: hashicorp/vault-action@v2.1.2
@@ -38,32 +35,30 @@ jobs:
           namespace: ETS-CLOUDPLATFORM-IAC-3365
           tlsSkipVerify: true
           secrets: 
-            secret/data/chef_delivery chef_delivery_key | CHEF_DELIVERY_KEY
-      - name: Checkout Repo 
-        uses: actions/checkout@v2 
-      - name: validate cookbook 
+            secret/data/chef_delivery chef_delivery_key | CHEF_DELIVERY_KEY ;
+            secret/data/chef_delivery INTERNAL_REPO_READ_TOKEN | INTERNAL_REPO_READ_TOKEN 
+      - name: Check out validate cookbook action
         uses: actions/checkout@v2 
         with:
-          repository: manulife-ets-sandbox/validate_cookbook
+          repository: manulife-ets/validate_cookbook
           ref: testing
-          token: ${{ secrets.TEST_TOKEN }}
+          token: ${{ steps.retrieve_secret.outputs.INTERNAL_REPO_READ_TOKEN }}
           path: .github/actions/validate_cookbook
-      - name: validate_cookbook
+      - name: validate cookbook
         uses: ./.github/actions/validate_cookbook
         with:
           chef_key: ${{ steps.retrieve_secret.outputs.CHEF_DELIVERY_KEY }}
-          chef_server: ${{ steps.extract_chefserver.outputs.chefserver }}  
-      - name: Checkout Repo 
-        uses: actions/checkout@v2 
-      - name: upload cookbook 
-        uses: actions/checkout@v2 
+          chef_server: ${{ steps.extract_chefserver.outputs.chefserver }}
+      - name: Check out upload cookbook action
+        uses: actions/checkout@v2
         with:
-          repository: manulife-ets-sandbox/upload_cookbook
-          ref: testing
-          token: ${{ secrets.TEST_TOKEN }}
+          repository: manulife-ets/upload_cookbook
+          ref: latest
+          token: ${{ steps.retrieve_secret.outputs.INTERNAL_REPO_READ_TOKEN }}
           path: .github/actions/upload_cookbook
-      - name: upload_cookbook
+      - name: upload cookbook
         uses: ./.github/actions/upload_cookbook
         with:
           chef_key: ${{ steps.retrieve_secret.outputs.CHEF_DELIVERY_KEY }}
           chef_server: ${{ steps.extract_chefserver.outputs.chefserver }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
